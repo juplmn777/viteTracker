@@ -43,6 +43,27 @@ export default {
       areTasksLoading: true,
     };
   },
+  watch: {
+    tasks: {
+      deep: true,
+      async handler(newVal, oldVal) {
+        if (newVal !== null && oldVal !== null) {
+          try {
+            await TaskService.updateAll(this.tasks);
+          } catch (e) {
+            console.error(e);
+            this.$notify({
+              title: 'Mode offline',
+              message: 'Sunchronisation des tâches impossible...',
+              type: 'error',
+              offset: 50,
+              duration: 2000,
+            });
+          }
+        }
+      },
+    },
+  },
   methods: {
     async addTask({ name, startTime }) {
       // Ajout de la tâche en local
@@ -98,6 +119,14 @@ export default {
       this.tasks = await TaskService.getAll();
     } catch (e) {
       console.error(e);
+      this.tasks = [];
+      this.$notify({
+        title: 'Mode offline',
+        message: 'Récupération des tçaches impossible',
+        type: 'error',
+        offset: 50,
+        duration: 2000,
+      });
     }
     this.areTasksLoading = false;
   },

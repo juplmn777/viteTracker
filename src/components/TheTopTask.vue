@@ -64,15 +64,32 @@ export default {
         clearInterval(this.intervalEverySecond);
       }
     },
+    errorMsg(newVal) {
+      if (newVal !== null) {
+        this.$notify({
+          title: 'ATTENTION ⚠',
+          message: this.errorMsg,
+          type: 'warning',
+          offset: 50,
+          position: 'bottom-right',
+          duration: 2000,
+          onClose: () => {
+            if (this.errorMsg === newVal) {
+              this.errorMsg = null;
+            }
+          },
+        });
+      }
+    },
   },
   methods: {
     startTask() {
       //Vérification
       if (this.taskname.length === 0) {
-        this.errorMsg = "⚠ Le nom d'une tâche ne peut être vide.";
+        this.errorMsg = "Le nom d'une tâche ne peut être vide.";
         return;
       } else if (this.isTaskInProgress) {
-        this.errorMsg = '⚠ Une tâche est déjà en cours !!';
+        this.errorMsg = 'Une tâche est déjà en cours !!';
         return;
       } else {
         this.errorMsg = null;
