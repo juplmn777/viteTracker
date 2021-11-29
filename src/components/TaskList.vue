@@ -6,8 +6,10 @@
     empty-text="Aucune tâche..."
     style="width: 100%"
     v-loading="areTasksLoading"
+    ref="table"
   >
-    <el-table-column prop="name" label="Tâche"> </el-table-column>
+    <el-table-column prop="name" sort-by="startTime" label="Tâche">
+    </el-table-column>
 
     <el-table-column
       align="right"
@@ -69,6 +71,14 @@ export default {
       default: false,
     },
   },
+  watch: {
+    tasks: {
+      deep: true,
+      handler() {
+        this.sortTable();
+      },
+    },
+  },
   methods: {
     formatTimestamp(ts) {
       return this.timestampFormatter.format(ts);
@@ -93,6 +103,14 @@ export default {
     copyToClipboard(text) {
       navigator.clipboard.writeText(text);
     },
+    sortTable() {
+      const sortBy =
+        this.$route.query.sortBy === 'ascending' ? 'ascending' : 'descending';
+      this.$refs.table.sort('name', sortBy);
+    },
+  },
+  mounted() {
+    this.sortTable();
   },
 };
 </script>
