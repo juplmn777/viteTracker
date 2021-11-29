@@ -1,19 +1,19 @@
 <template>
-  <h3>Vite Tracker</h3>
-  <el-menu>
-    <el-menu-item index="1">
+  <el-menu :router="true" :default-active="this.$route.path">
+    <h3>Vite Tracker</h3>
+    <el-menu-item index="/">
       <el-icon>
         <timer />
       </el-icon>
       <span>Tracker</span>
     </el-menu-item>
-    <el-menu-item index="2" disabled>
+    <!-- <el-menu-item index="2" disabled>
       <el-icon>
         <folder-opened />
       </el-icon>
       <span>Catégories</span>
-    </el-menu-item>
-    <el-menu-item index="3" disabled>
+    </el-menu-item> -->
+    <el-menu-item index="/settings">
       <el-icon>
         <setting />
       </el-icon>
