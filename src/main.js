@@ -19,6 +19,7 @@ const router = VueRouter.createRouter({
     {
       path: '/',
       name: 'Home',
+      alias: '/home',
       component: HomePage,
       children: [
         {
@@ -26,6 +27,10 @@ const router = VueRouter.createRouter({
           component: HomePage,
         },
       ],
+    },
+    {
+      path: '/home',
+      redirect: '/',
     },
     {
       path: '/settings',
