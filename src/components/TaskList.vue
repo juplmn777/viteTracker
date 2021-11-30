@@ -1,4 +1,9 @@
 <template>
+  <el-select v-model="sortBy" placeholder="Ordre des tâches">
+    <el-option label="Récente -> Ancienne" value="descending"> </el-option>
+    <el-option label="Ancienne -> Récente" value="ascending"> </el-option>
+  </el-select>
+
   <el-table
     :data="tasks"
     stripe
@@ -59,6 +64,9 @@ export default {
         hour: '2-digit',
         minute: '2-digit',
       }),
+      defaultSortBy: 'descending',
+      sortBy:
+        this.$route.query.sortBy === 'ascending' ? 'ascending' : 'descending',
     };
   },
   props: {
@@ -72,6 +80,14 @@ export default {
     },
   },
   watch: {
+    sortBy(newValue) {
+      this.$router.push({
+        query: {
+          sortBy: newValue === this.defaultSortBy ? undefined : newValue,
+        },
+      });
+      this.sortTable();
+    },
     tasks: {
       deep: true,
       handler() {
@@ -104,9 +120,7 @@ export default {
       navigator.clipboard.writeText(text);
     },
     sortTable() {
-      const sortBy =
-        this.$route.query.sortBy === 'ascending' ? 'ascending' : 'descending';
-      this.$refs.table.sort('name', sortBy);
+      this.$refs.table.sort('name', this.sortBy);
     },
   },
   mounted() {
@@ -114,3 +128,8 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.el-select {
+  float: right;
+}
+</style>
