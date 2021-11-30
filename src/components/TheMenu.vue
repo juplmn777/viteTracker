@@ -1,5 +1,8 @@
 <template>
-  <el-menu :router="true" :default-active="this.$route.path">
+  <el-menu
+    :router="true"
+    :default-active="$route.matched[0] ? $route.matched[0].path : $route.path"
+  >
     <h3>Vite Tracker</h3>
     <el-menu-item index="/">
       <el-icon>
@@ -7,12 +10,7 @@
       </el-icon>
       <span>Tracker</span>
     </el-menu-item>
-    <!-- <el-menu-item index="2" disabled>
-      <el-icon>
-        <folder-opened />
-      </el-icon>
-      <span>Catégories</span>
-    </el-menu-item> -->
+
     <el-menu-item index="/settings">
       <el-icon>
         <setting />

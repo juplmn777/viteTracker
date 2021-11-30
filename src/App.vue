@@ -73,7 +73,6 @@ export default {
         startTime,
         endTime: Date.now(),
       });
-
       // MAJ des tâches sur l'API
       try {
         await TaskService.updateAll(this.tasks);
@@ -170,5 +169,9 @@ body {
   .el-input .el-input__inner {
     border: none !important;
   }
+}
+
+.highlighted-line {
+  background: #40a0ff31 !important;
 }
 </style>

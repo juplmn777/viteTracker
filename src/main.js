@@ -9,6 +9,9 @@ import App from './App.vue';
 import HomePage from './pages/Home.vue';
 import SettingsPage from './pages/Settings.vue';
 
+import SettingsApp from './components/SettingsApp.vue';
+import SettingsUser from './components/SettingsUser.vue';
+
 //definition des pages du router :
 const router = VueRouter.createRouter({
   history: VueRouter.createWebHistory(),
@@ -17,11 +20,27 @@ const router = VueRouter.createRouter({
       path: '/',
       name: 'Home',
       component: HomePage,
+      children: [
+        {
+          path: 'home/:taskID',
+          component: HomePage,
+        },
+      ],
     },
     {
       path: '/settings',
       name: 'Settings',
       component: SettingsPage,
+      children: [
+        {
+          path: 'app',
+          component: SettingsApp,
+        },
+        {
+          path: 'user',
+          component: SettingsUser,
+        },
+      ],
     },
   ],
 });
