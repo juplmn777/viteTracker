@@ -11,7 +11,7 @@
 
       <el-main>
         <router-view
-          :tasks="tasks"
+          :tasks="tasks || []"
           :areTasksLoading="areTasksLoading"
           v-on="{
             restart: sendRestartTask,

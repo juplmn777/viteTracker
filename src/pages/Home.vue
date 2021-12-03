@@ -2,7 +2,7 @@
   <div>
     <h1>Accueil</h1>
     <TaskList
-      :tasks="tasks"
+      :tasks="tasks || []"
       :areTasksLoading="areTasksLoading"
       v-on="{
         restart: sendRestart,

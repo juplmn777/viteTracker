@@ -34,7 +34,7 @@ export default {
 
 <style lang="scss" scoped>
 .el-menu {
-  text-align: left;
+  text-align: center;
   background: #ff5353;
   border: none;
 
