@@ -9,6 +9,7 @@ import App from './App.vue';
 import HomePage from './pages/Home.vue';
 import SettingsPage from './pages/Settings.vue';
 import NotFoundPage from './pages/NotFound.vue';
+import LoginPage from './pages/Login.vue';
 
 import SettingsApp from './components/SettingsApp.vue';
 import SettingsUser from './components/SettingsUser.vue';
@@ -22,6 +23,9 @@ const router = VueRouter.createRouter({
       name: 'Home',
       alias: '/home',
       component: HomePage,
+      meta: {
+        needToBeLogged: false,
+      },
       children: [
         {
           path: 'home/:taskID',
@@ -37,14 +41,17 @@ const router = VueRouter.createRouter({
       path: '/settings',
       name: 'Settings',
       component: SettingsPage,
+      metta: { needToBeLogged: false },
       children: [
         {
           path: 'app',
           component: SettingsApp,
+          meta: { needToBeLogged: false },
         },
         {
           path: 'user',
           component: SettingsUser,
+          meta: { needToBeLogged: false },
         },
       ],
     },
@@ -52,6 +59,16 @@ const router = VueRouter.createRouter({
       path: '/notfound',
       name: 'NotFound',
       component: NotFoundPage,
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: LoginPage,
+      beforeEnter: (to, from) => {
+        if (localStorage.getItem('isLogged')) {
+          return '/';
+        }
+      },
     },
     {
       path: '/:wrongPath(.*)', //n'importe quel caractère (.), plusieurs fois (*)
@@ -65,6 +82,12 @@ const router = VueRouter.createRouter({
       },
     },
   ],
+});
+
+router.beforeEach((to, from) => {
+  if (to.meta.needToBeLogged && !localStorage.getItem('isLogged')) {
+    return '/login';
+  }
 });
 
 const app = createApp(App);
