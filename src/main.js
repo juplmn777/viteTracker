@@ -7,12 +7,15 @@ import 'element-plus/dist/index.css';
 import App from './App.vue';
 //router pages :
 import HomePage from './pages/Home.vue';
-import SettingsPage from './pages/Settings.vue';
-import NotFoundPage from './pages/NotFound.vue';
-import LoginPage from './pages/Login.vue';
 
-import SettingsApp from './components/SettingsApp.vue';
-import SettingsUser from './components/SettingsUser.vue';
+//Lasy Loading
+const LoginPage = () => import('./pages/Login.vue');
+const NotFoundPage = () => import('./pages/NotFound.vue');
+
+const SettingsPage = () => import('./pages/Settings.vue');
+const SettingsApp = () => import('./components/SettingsApp.vue');
+
+const SettingsUser = () => import('./components/SettingsUser.vue');
 
 //definition des pages du router :
 const router = VueRouter.createRouter({

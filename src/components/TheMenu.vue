@@ -1,9 +1,15 @@
 <template>
   <el-menu
     :router="true"
-    :default-active="$route.matched[0] ? $route.matched[0].path : $route.path"
+    :default-active="
+      ($route.matched[0] && $route.matched[0].path == '/') ||
+      $route.path == '/home'
+        ? '/'
+        : $route.path
+    "
   >
     <h3>Vite Tracker</h3>
+
     <el-menu-item index="/">
       <el-icon>
         <timer />
@@ -11,12 +17,16 @@
       <span>Tracker</span>
     </el-menu-item>
 
-    <el-menu-item index="/settings">
-      <el-icon>
-        <setting />
-      </el-icon>
-      <span>Paramètres</span>
-    </el-menu-item>
+    <el-sub-menu index="/settings">
+      <template #title>
+        <el-icon>
+          <setting />
+        </el-icon>
+        <span>Paramètres</span>
+      </template>
+      <el-menu-item index="/settings/app">Application</el-menu-item>
+      <el-menu-item index="/settings/user">Utilisateur</el-menu-item>
+    </el-sub-menu>
   </el-menu>
 </template>
 
@@ -45,6 +55,23 @@ export default {
 
     &:hover {
       color: #333;
+    }
+  }
+
+  .el-sub-menu {
+    background: #ff5353;
+
+    .el-icon {
+      color: #fff;
+    }
+
+    span {
+      color: #fff;
+    }
+
+    .el-menu-item {
+      background: #ff5353;
+      text-transform: lowercase;
     }
   }
 }
