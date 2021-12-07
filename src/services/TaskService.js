@@ -1,13 +1,7 @@
 import axios from 'axios';
 
-const JSON_BIN_SECRET = import.meta.env.VITE_JSON_BIN_SECRET;
-
-const instance = axios.create({
-  baseURL: 'https://api.jsonbin.io/v3/b/619f562962ed886f91546ce4',
-  headers: {
-    'X-Master-Key': JSON_BIN_SECRET,
-  },
-});
+let instance = null;
+updateAxiosInstance();
 
 //Récupération de toutes les tâches
 export async function getAll() {
@@ -18,4 +12,14 @@ export async function getAll() {
 //MAJ de toutes les tâches
 export async function updateAll(newTasks) {
   await instance.put('/', newTasks);
+}
+
+//MAJ de l'instance d'axios
+export async function updateAxiosInstance() {
+  instance = axios.create({
+    baseURL: 'https://api.jsonbin.io/v3/b/' + localStorage.getItem('jsonBinID'),
+    headers: {
+      'X-Master-Key': localStorage.getItem('jsonBinKey'),
+    },
+  });
 }

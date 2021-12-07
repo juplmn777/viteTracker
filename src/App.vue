@@ -16,6 +16,7 @@
           v-on="{
             restart: sendRestartTask,
             delete: deleteTask,
+            updateTasks: getAllTasks,
           }"
         ></router-view>
       </el-main>
@@ -39,7 +40,7 @@ export default {
   },
   data() {
     return {
-      tasks: [],
+      tasks: null,
       areTasksLoading: true,
     };
   },
@@ -54,7 +55,7 @@ export default {
             console.error(e);
             this.$notify({
               title: 'Mode offline',
-              message: 'Sunchronisation des tâches impossible...',
+              message: 'Synchronisation des tâches impossible...',
               type: 'error',
               offset: 50,
               duration: 2000,
@@ -73,12 +74,6 @@ export default {
         startTime,
         endTime: Date.now(),
       });
-      // MAJ des tâches sur l'API
-      try {
-        await TaskService.updateAll(this.tasks);
-      } catch (e) {
-        console.error(e);
-      }
     },
     sendRestartTask(taskID) {
       // Récupération du nom de l'ancienne tâche
@@ -103,31 +98,27 @@ export default {
 
       // Suppression tâche en local
       this.tasks.splice(taskIndex, 1);
-
-      // MAJ des tâches sur l'API
+    },
+    async getAllTasks() {
+      this.areTasksLoading = true;
       try {
-        await TaskService.updateAll(this.tasks);
+        this.tasks = await TaskService.getAll();
       } catch (e) {
         console.error(e);
+        this.tasks = [];
+        this.$notify({
+          title: 'Mode hors-ligne',
+          message: `Récupération des tâches impossible`,
+          type: 'error',
+          offset: 50,
+          duration: 2000,
+        });
       }
+      this.areTasksLoading = false;
     },
   },
   async created() {
-    // Récupération de toutes les tâches
-    try {
-      this.tasks = await TaskService.getAll();
-    } catch (e) {
-      console.error(e);
-      this.tasks = [];
-      this.$notify({
-        title: 'Mode offline',
-        message: 'Récupération des tçaches impossible',
-        type: 'error',
-        offset: 50,
-        duration: 2000,
-      });
-    }
-    this.areTasksLoading = false;
+    await this.getAllTasks();
   },
 };
 </script>
